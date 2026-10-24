@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mamie aux mains d'argent | Créations Artisanales & Découpe Laser Sur-Mesure</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        script: ['"Dancing Script"', 'cursive'],
+                    },
+                    colors: {
+                        wood: {
+                            50: '#fdfaf6',
+                            100: '#f7efe4',
+                            200: '#eedbc3',
+                            300: '#e2c099',
+                            400: '#d49f6c',
+                            500: '#c8854a',
+                            600: '#ba6e3e',
+                            700: '#9b5735',
+                            800: '#7d4630',
+                            900: '#1c1512',
+                            950: '#110c0a',
+                        },
+                        silver: {
+                            light: '#f8fafc',
+                            DEFAULT: '#cbd5e1',
+                            dark: '#94a3b8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --gold-glow: rgba(212, 159, 108, 0.35);
+            --laser-amber: #ff9d42;
+        }
+
+        body {
+            background-color: #110c0a;
+            color: #f7efe4;
+            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Subtle Wood Grain & Ambient Texture */
+        .bg-wood-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(200, 133, 74, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(226, 192, 153, 0.08) 0%, transparent 50%),
+                repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 8px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #110c0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #c8854a, #e2c099);
+            border-radius: 4px;
+        }
+
+        /* Custom Laser Cursor (Desktop) */
+        @media (pointer: fine) {
+            .cursor-dot {
+                width: 8px;
+                height: 8px;
+                background: #ffae52;
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 9999;
+                box-shadow: 0 0 15px 4px rgba(255, 174, 82, 0.85);
+                transform: translate(-50%, -50%);
+                transition: transform 0.1s ease;
+            }
+            .cursor-ring {
+                width: 38px;
+                height: 38px;
+                border: 1.5px solid rgba(226, 192, 153, 0.45);
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 9998;
+                transform: translate(-50%, -50%);
+                transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+            }
+            .cursor-ring.active {
+                width: 60px;
+                height: 60px;
+                border-color: #ffae52;
+                background-color: rgba(255, 174, 82, 0.08);
+            }
+        }
+
+        /* 3D Card Tilt & Spotlight */
+        .craft-card {
+            transform-style: preserve-3d;
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .craft-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(226, 192, 153, 0.16), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .craft-card:hover::before {
+            opacity: 1;
+        }
+        .craft-card:hover {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 25px rgba(200, 133, 74, 0.25);
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Laser Engraving Text Effect */
+        .engraved-text {
+            color: #2b180a;
+            text-shadow: 
+                0px 1px 1px rgba(255, 255, 255, 0.35),
+                0px -1px 1px rgba(0, 0, 0, 0.7);
+            transition: all 0.25s ease;
+        }
+
+        .wood-plaque {
+            background: 
+                linear-gradient(135deg, rgba(212, 159, 108, 0.92), rgba(168, 110, 62, 0.95)),
+                repeating-linear-gradient(90deg, rgba(60, 30, 10, 0.06) 0px, rgba(60, 30, 10, 0.06) 3px, transparent 3px, transparent 12px);
+            box-shadow: 
+                inset 0 2px 6px rgba(255,255,255,0.35),
+                inset 0 -6px 12px rgba(45, 20, 5, 0.6),
+                0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .led-plaque {
+            background: rgba(15, 23, 42, 0.85);
+            border: 2px solid rgba(56, 189, 248, 0.5);
+            box-shadow: 
+                0 0 35px var(--led-color, #38bdf8),
+                inset 0 0 25px var(--led-color, #38bdf8);
+        }
+
+        .led-engraved {
+            color: #ffffff;
+            text-shadow: 
+                0 0 10px var(--led-color, #38bdf8),
+                0 0 20px var(--led-color, #38bdf8),
+                0 0 35px var(--led-color, #38bdf8);
+        }
+
+        /* Infinite Marquee */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 32s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        /* Floating Animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(1.5deg); }
+        }
+        .animate-float {
+            animation: floatSlow 6s ease-in-out infinite;
+        }
+
+        /* Shimmer Silver & Gold Gradient Text */
+        .text-shimmer {
+            background: linear-gradient(90deg, #f7efe4 0%, #e2c099 35%, #cbd5e1 65%, #f7efe4 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 6s linear infinite;
+        }
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+    </style>
+</head>
+<body class="bg-wood-pattern selection:bg-wood-500 selection:text-white">
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-wood-500 via-amber-300 to-silver z-[100] transition-all duration-150" style="width: 0%;"></div>
+
+    <!-- Custom Laser Cursor -->
+    <div id="cursor-dot" class="cursor-dot hidden md:block"></div>
+    <div id="cursor-ring" class="cursor-ring hidden md:block"></div>
+
+    <!-- Background Interactive Sparkles Canvas -->
+    <canvas id="sparkles-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-60"></canvas>
+
+    <!-- Navigation Header -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 px-4 sm:px-8">
+        <div class="max-w-7xl mx-auto rounded-2xl bg-wood-900/75 backdrop-blur-xl border border-wood-300/15 px-5 py-3 shadow-2xl flex items-center justify-between">
+            <!-- Brand Logo (Real Logo from raspy-hall-6b8b) -->
+            <a href="#accueil" class="flex items-center gap-3.5 group">
+                <div class="relative w-12 h-12 rounded-full overflow-hidden border-2 border-wood-300/50 shadow-lg group-hover:scale-105 transition-transform bg-wood-800 flex items-center justify-center">
+                    <img src="https://raspy-hall-6b8b.jo6669992.workers.dev/LogoMAMA.png" 
+                         alt="Logo Mamie aux mains d'argent" 
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=200&q=80'">
+                </div>
+                <div>
+                    <span class="font-serif text-xl sm:text-2xl font-bold tracking-wide text-shimmer block leading-none">
+                        Mamie aux mains d'argent
+                    </span>
+                    <span class="text-xs text-wood-300/80 tracking-widest uppercase block mt-1">
+                        Artisanat • Gravure Laser & Création
+                    </span>
+                </div>
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden lg:flex items-center gap-8 text-sm font-medium text-wood-100/85">
+                <a href="#accueil" class="hover:text-wood-300 transition-colors py-1">Accueil</a>
+                <a href="#realisations" class="hover:text-wood-300 transition-colors py-1 flex items-center gap-1.5">
+                    <span>Mes 12 Réalisations</span>
+                    <span class="px-1.5 py-0.5 text-[10px] rounded-full bg-wood-500/30 text-wood-200 border border-wood-400/30">Photos Réelles</span>
+                </a>
+                <a href="#atelier-live" class="hover:text-wood-300 transition-colors py-1">Simulateur Sur-Mesure</a>
+                <a href="#a-propos" class="hover:text-wood-300 transition-colors py-1">Savoir-Faire</a>
+                <a href="#contact" class="hover:text-wood-300 transition-colors py-1">Contact</a>
+            </nav>
+
+            <!-- CTA Button -->
+            <div class="hidden sm:flex items-center gap-3">
+                <a href="https://www.facebook.com/profile.php?id=61582478623297" target="_blank" rel="noopener noreferrer" 
+                   class="w-10 h-10 rounded-full bg-wood-800/80 hover:bg-[#1877F2] text-wood-200 hover:text-white border border-wood-300/20 flex items-center justify-center transition-all duration-300"
+                   title="Page Facebook officielle">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+                <a href="https://www.instagram.com/mamie_aux_mains_d_argent" target="_blank" rel="noopener noreferrer" 
+                   class="w-10 h-10 rounded-full bg-wood-800/80 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 text-wood-200 hover:text-white border border-wood-300/20 flex items-center justify-center transition-all duration-300"
+                   title="Page Instagram officielle">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="#contact" class="relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-wood-500 to-wood-400 text-wood-950 font-semibold text-sm shadow-lg shadow-wood-500/25 hover:shadow-wood-400/50 hover:scale-105 transition-all">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Commande spéciale</span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Trigger -->
+            <button id="mobile-menu-btn" class="lg:hidden w-10 h-10 rounded-xl bg-wood-800/80 border border-wood-300/20 flex items-center justify-center text-wood-200">
+                <i class="fa-solid fa-bars text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden max-w-7xl mx-auto mt-2 rounded-2xl bg-wood-900/95 backdrop-blur-xl border border-wood-300/20 p-5 shadow-2xl flex-col gap-4">
+            <a href="#accueil" class="mobile-link block py-2 text-wood-100 hover:text-wood-300 border-b border-wood-800">Accueil</a>
+            <a href="#realisations" class="mobile-link block py-2 text-wood-100 hover:text-wood-300 border-b border-wood-800">Mes Réalisations (Galerie)</a>
+            <a href="#atelier-live" class="mobile-link block py-2 text-wood-100 hover:text-wood-300 border-b border-wood-800">Simulateur de Gravure</a>
+            <a href="#a-propos" class="mobile-link block py-2 text-wood-100 hover:text-wood-300 border-b border-wood-800">À Propos</a>
+            <a href="#contact" class="mobile-link block py-2 text-wood-100 hover:text-wood-300">Contact & Réseaux</a>
+            <div class="pt-2 flex gap-3">
+                <a href="#contact" class="flex-1 text-center py-3 rounded-xl bg-gradient-to-r from-wood-500 to-wood-400 text-wood-950 font-bold">
+                    Commande spéciale
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="accueil" class="relative min-h-screen pt-32 pb-20 flex items-center overflow-hidden">
+        <!-- Ambient Glowing Orbs -->
+        <div class="absolute top-1/4 left-10 w-96 h-96 bg-wood-500/20 rounded-full blur-[130px] pointer-events-none"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-amber-500/15 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-8 relative z-10 w-full">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Column: Hero Text -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-wood-800/70 border border-wood-400/30 text-wood-200 text-xs sm:text-sm font-medium shadow-inner">
+                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                        <i class="fa-solid fa-sparkles text-amber-400"></i>
+                        <span>Créations uniques & fait main • Découpe & Gravure Laser</span>
+                    </div>
+
+                    <h1 class="font-serif text-4xl sm:text-6xl xl:text-7xl font-bold leading-[1.08] tracking-tight">
+                        La magie du <span class="text-shimmer italic font-normal">sur-mesure</span> pour vos plus beaux moments.
+                    </h1>
+
+                    <p class="text-wood-200/85 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
+                        Bienvenue dans l'univers de <strong class="text-wood-200 font-semibold">Mamie aux mains d'argent</strong>. Découvrez un atelier chaleureux où le bois, les luminaires LED et les décorations personnalisées prennent vie selon vos envies et vos fêtes.
+                    </p>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#realisations" class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-wood-500 via-wood-400 to-amber-300 text-wood-950 font-bold text-base shadow-xl shadow-wood-500/25 hover:scale-105 transition-all duration-300">
+                            <span>Découvrir mes 12 créations</span>
+                            <i class="fa-solid fa-arrow-down group-hover:translate-y-1 transition-transform"></i>
+                        </a>
+                        <a href="#atelier-live" class="inline-flex items-center gap-3 px-7 py-4 rounded-full bg-wood-900/90 hover:bg-wood-800 text-wood-100 border border-wood-300/30 font-medium text-base transition-all hover:border-wood-300">
+                            <i class="fa-solid fa-wand-Sparkles text-amber-400"></i>
+                            <span>Tester votre gravure en direct</span>
+                        </a>
+                    </div>
+
+                    <!-- Trust Badges -->
+                    <div class="pt-6 grid grid-cols-3 gap-4 border-t border-wood-300/15 max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <div class="font-serif text-2xl sm:text-3xl font-bold text-wood-300">100%</div>
+                            <div class="text-xs text-wood-200/70">Artisanal & Fait Main</div>
+                        </div>
+                        <div>
+                            <div class="font-serif text-2xl sm:text-3xl font-bold text-wood-300">Sur-Mesure</div>
+                            <div class="text-xs text-wood-200/70">Prénoms & motifs au choix</div>
+                        </div>
+                        <div>
+                            <div class="font-serif text-2xl sm:text-3xl font-bold text-wood-300">Passion</div>
+                            <div class="text-xs text-wood-200/70">Finitions soignées</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Interactive Showcase with REAL Logo & Floating Real Photos -->
+                <div class="lg:col-span-5 relative flex justify-center">
+                    <div class="relative w-72 sm:w-96 aspect-square flex items-center justify-center">
+                        <!-- Animated Rotating Halo -->
+                        <div class="absolute inset-0 rounded-full border border-dashed border-wood-400/30 animate-[spin_40s_linear_infinite]"></div>
+                        <div class="absolute inset-6 rounded-full border border-wood-300/20 animate-[spin_25s_linear_infinite_reverse]"></div>
+
+                        <!-- Main Logo Medallion -->
+                        <div class="relative z-20 w-56 sm:w-64 aspect-square rounded-full p-2 bg-gradient-to-b from-wood-300 via-wood-500 to-wood-800 shadow-[0_0_70px_rgba(200,133,74,0.45)] animate-float">
+                            <img src="https://raspy-hall-6b8b.jo6669992.workers.dev/LogoMAMA.png" 
+                                 alt="Mamie aux mains d'argent" 
+                                 class="w-full h-full object-cover rounded-full border-4 border-wood-950">
+                        </div>
+
+                        <!-- Floating Real Creation Preview 1 -->
+                        <a href="#realisations" class="absolute -top-4 -left-4 sm:-left-8 z-30 w-28 sm:w-32 p-1.5 rounded-2xl bg-wood-900/90 backdrop-blur-md border border-wood-300/30 shadow-2xl hover:scale-110 transition-transform">
+                            <img src="https://raspy-hall-6b8b.jo6669992.workers.dev/IMAGES006.jpg" alt="Lampe LED Stade Toulousain" class="w-full h-20 sm:h-24 object-cover rounded-xl">
+                            <p class="text-[10px] font-semibold text-center text-wood-200 mt-1 truncate">Luminaires LED</p>
+                        </a>
+
+                        <!-- Floating Real Creation Preview 2 -->
+                        <a href="#realisations" class="absolute -bottom-4 -right-2 sm:-right-6 z-30 w-28 sm:w-32 p-1.5 rounded-2xl bg-wood-900/90 backdrop-blur-md border border-wood-300/30 shadow-2xl hover:scale-110 transition-transform">
+                            <img src="https://raspy-hall-6b8b.jo6669992.workers.dev/IMAGES009.jpg" alt="Planche à Raclette" class="w-full h-20 sm:h-24 object-cover rounded-xl">
+                            <p class="text-[10px] font-semibold text-center text-wood-200 mt-1 truncate">Planches Gravées</p>
+                        </a>
+
+                        <!-- Floating Real Creation Preview 3 -->
+                        <a href="#realisations" class="absolute top-1/2 -right-6 sm:-right-12 -translate-y-1/2 z-30 w-24 sm:w-28 p-1.5 rounded-2xl bg-wood-900/90 backdrop-blur-md border border-wood-300/30 shadow-2xl hover:scale-110 transition-transform">
+                            <img src="https://raspy-hall-6b8b.jo6669992.workers.dev/IMAGES002.jpg" alt="Boîtes de Pâques" class="w-full h-16 sm:h-20 object-cover rounded-xl">
+                            <p class="text-[10px] font-semibold text-center text-wood-200 mt-1 truncate">Fêtes & Bois</p>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- INFINITE MARQUEE BANNER -->
+    <div class="py-5 bg-wood-900/90 border-y border-wood-300/15 overflow-hidden relative z-10">
+        <div class="animate-marquee flex items-center gap-10 text-sm uppercase tracking-[0.2em] text-wood-300/90 font-medium">
+            <span><i class="fa-solid fa-star text-amber-400 mr-3"></i>Découpe Laser de Précision</span>
+            <span><i class="fa-solid fa-lightbulb text-amber-400 mr-3"></i>Lampes LED Personnalisées</span>
+            <span><i class="fa-solid fa-Cheese text-amber-400 mr-3"></i>Planches Apéro & Raclette Gravées</span>
+            <span><i class="fa-solid fa-gift text-amber-400 mr-3"></i>Cadeaux Fêtes des Grands-Mères & Noël</span>
+            <span><i class="fa-solid fa-heart text-amber-400 mr-3"></i>Fait Main avec Amour</span>
+            <!-- Duplicate for seamless loop -->
+            <span><i class="fa-solid fa-star text-amber-400 mr-3"></i>Découpe Laser de Précision</span>
+            <span><i class="fa-solid fa-lightbulb text-amber-400 mr-3"></i>Lampes LED Personnalisées</span>
+            <span><i class="fa-solid fa-Cheese text-amber-400 mr-3"></i>Planches Apéro & Raclette Gravées</span>
+            <span><i class="fa-solid fa-gift text-amber-400 mr-3"></i>Cadeaux Fêtes des Grands-Mères & Noël</span>
+            <span><i class="fa-solid fa-heart text-amber-400 mr-3"></i>Fait Main avec Amour</span>
+        </div>
+    </div>
+
+    <!-- REAL PORTFOLIO GALLERY SECTION (ALL 12 ORIGINAL PHOTOS) -->
+    <section id="realisations" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8">
+            
+            <!-- Section Header -->
+            <div class="text-center max-w-3xl mx-auto mb-14 reveal-up">
+                <span class="text-xs uppercase tracking-[0.25em] text-wood-400 font-semibold block mb-2">Catalogue Officiel</span>
+                <h2 class="font-serif text-4xl sm:text-5xl font-bold text-wood-50 mb-4">
+                    Mes Réalisations Artisanales
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-wood-400 to-transparent mx-auto mb-5"></div>
+                <p class="text-wood-200/80 text-base sm:text-lg">
+                    Chaque pièce est fabriquée artisanalement avec soin, amour et passion. Cliquez sur une création pour l'observer en grand ou commander un modèle similaire personnalisé.
+                </p>
+            </div>
+
+            <!-- Interactive Category Filters -->
+            <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12 reveal-up" id="filter-buttons">
+                <button data-filter="all" class="filter-btn active px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-gradient-to-r from-wood-500 to-wood-400 text-wood-950 shadow-lg">
+                    Toutes les créations (12)
+                </button>
+                <button data-filter="fetes" class="filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all bg-wood-900/80 text-wood-200 border border-wood-300/20 hover:border-wood-400">
+                    🎄 Noël & Pâques (4)
+                </button>
+                <button data-filter="luminaire" class="filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all bg-wood-900/80 text-wood-200 border border-wood-300/20 hover:border-wood-400">
+                    💡 Lampes LED (2)
+                </button>
+                <button data-filter="gourmand" class="filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all bg-wood-900/80 text-wood-200 border border-wood-300/20 hover:border-wood-400">
+                    🧀 Planches Raclette & Apéro (2)
+                </button>
+                <button data-filter="cadeaux" class="filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all bg-wood-900/80 text-wood-200 border border-wood-300/20 hover:border-wood-400">
+                    🌹 Déco, Roses & Cadeaux (4)
+                </button>
+            </div>
+
+            <!-- Gallery Grid populated with your 12 real images -->
+            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7">
+                <!-- Populated dynamically via JS below for instant filtering and lightbox -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- LIVE INTERACTIVE ENGRAVING SIMULATOR -->
+    <section id="atelier-live" class="py-24 relative z-10 bg-wood-900/60 border-y border-wood-300/15">
+        <div class="max-w-6xl mx-auto px-4 sm:px-8">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Controls -->
+                <div class="lg:col-span-6 space-y-6 reveal-up">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-300 text-xs font-semibold">
+                        <i class="fa-solid fa-fire-flame-curved"></i>
+                        <span>Atelier Virtuel Interactif</span>
+                    </div>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold leading-tight">
+                        Testez votre <span class="text-shimmer italic">personnalisation</span> en temps réel
+                    </h2>
+                    <p class="text-wood-200/80 text-sm sm:text-base">
+                        Que ce soit pour une planche à raclette, une rose en bois, une boule de Noël ou une veilleuse LED, visualisez un aperçu de votre futur message gravé avant de m'envoyer votre demande.
+                    </p>
+
+                    <!-- Simulator Controls -->
+                    <div class="space-y-4 pt-2">
+                        <div>
+                            <label class="block text-xs uppercase tracking-wider text-wood-300 mb-2 font-semibold">1. Choisissez le style de support</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button type="button" id="mode-wood" class="py-3 px-4 rounded-xl bg-wood-500 text-wood-950 font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all">
+                                    <i class="fa-solid fa-tree"></i>
+                                    <span>Gravure sur Bois</span>
+                                </button>
+                                <button type="button" id="mode-led" class="py-3 px-4 rounded-xl bg-wood-800 text-wood-200 border border-wood-300/20 font-semibold text-sm flex items-center justify-center gap-2 hover:border-sky-400 transition-all">
+                                    <i class="fa-regular fa-lightbulb"></i>
+                                    <span>Lampe LED Sculptée</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="sim-input" class="block text-xs uppercase tracking-wider text-wood-300 mb-2 font-semibold">2. Votre prénom ou texte à graver</label>
+                            <input type="text" id="sim-input" maxlength="28" value="Bonne Fête Mamie ♥" 
+                                   placeholder="Ex: Famille Martin, Joyeux Noël..."
+                                   class="w-full px-4 py-3.5 rounded-xl bg-wood-950/90 border border-wood-300/30 text-wood-100 focus:outline-none focus:border-amber-400 transition-colors text-base">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs uppercase tracking-wider text-wood-300 mb-2 font-semibold">3. Ornement</label>
+                                <select id="sim-icon" class="w-full px-3.5 py-3 rounded-xl bg-wood-950/90 border border-wood-300/30 text-wood-100 text-sm focus:outline-none focus:border-amber-400">
+                                    <option value="fa-heart">♥ Cœur Tendresse</option>
+                                    <option value="fa-snowflake">❄ Flocon de Noël</option>
+                                    <option value="fa-trophy">🏆 Club Sportif (OM / Rugby)</option>
+                                    <option value="fa-wine-glass">🍷 Apéro & Raclette</option>
+                                    <option value="fa-paw">🦊 Renard / Nature</option>
+                                    <option value="fa-crown">👑 Couronne Royale</option>
+                                </select>
+                            </div>
+
+                            <div id="led-color-picker" class="opacity-40 pointer-events-none transition-opacity">
+                                <label class="block text-xs uppercase tracking-wider text-wood-300 mb-2 font-semibold">Couleur LED</label>
+                                <div class="flex items-center gap-2 pt-1.5">
+                                    <button type="button" data-led="#38bdf8" class="led-color-btn w-8 h-8 rounded-full bg-sky-400 ring-2 ring-white scale-110 transition-transform" title="Bleu OM"></button>
+                                    <button type="button" data-led="#ef4444" class="led-color-btn w-8 h-8 rounded-full bg-red-500 transition-transform" title="Rouge Stade Toulousain"></button>
+                                    <button type="button" data-led="#f59e0b" class="led-color-btn w-8 h-8 rounded-full bg-amber-500 transition-transform" title="Blanc Chaud / Or"></button>
+                                    <button type="button" data-led="#ec4899" class="led-color-btn w-8 h-8 rounded-full bg-pink-500 transition-transform" title="Rose Pailleté"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Live Preview Board -->
+                <div class="lg:col-span-6 reveal-up">
+                    <div id="preview-board" class="wood-plaque rounded-3xl p-8 sm:p-12 min-h-[340px] flex flex-col items-center justify-center text-center relative overflow-hidden transition-all duration-500 border-4 border-wood-700/60">
+                        <!-- Corner Rivets / Wood Details -->
+                        <div class="w-3 h-3 rounded-full bg-wood-950/50 absolute top-5 left-5"></div>
+                        <div class="w-3 h-3 rounded-full bg-wood-950/50 absolute top-5 right-5"></div>
+                        <div class="w-3 h-3 rounded-full bg-wood-950/50 absolute bottom-5 left-5"></div>
+                        <div class="w-3 h-3 rounded-full bg-wood-950/50 absolute bottom-5 right-5"></div>
+
+                        <!-- Decorative Top Flourish -->
+                        <div id="preview-icon-wrap" class="text-4xl sm:text-5xl mb-4 engraved-text transition-all">
+                            <i id="preview-icon" class="fa-solid fa-heart"></i>
+                        </div>
+
+                        <!-- Live Engraved Text -->
+                        <div id="preview-text" class="font-script text-4xl sm:text-6xl font-bold engraved-text break-words max-w-full px-4 leading-tight">
+                            Bonne Fête Mamie ♥
+                        </div>
+
+                        <!-- Subtitle Stamp -->
+                        <div id="preview-sub" class="mt-6 text-xs uppercase tracking-[0.3em] engraved-text font-semibold opacity-80">
+                            ★ Fait main par Mamie aux mains d'argent ★
+                        </div>
+                    </div>
+                    <p class="text-center text-xs text-wood-300/70 mt-3">
+                        <i class="fa-solid fa-circle-info mr-1"></i> Aperçu indicatif — Chaque création est dessinée sur-mesure selon votre demande.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SAVOIR-FAIRE & PASSION (ABOUT SECTION WITH ORIGINAL TEXT) -->
+    <section id="a-propos" class="py-24 relative z-10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-8">
+            <div class="rounded-3xl bg-gradient-to-br from-wood-900/95 via-wood-900/80 to-wood-800/60 border border-wood-300/20 p-8 sm:p-14 shadow-2xl reveal-up">
+                <div class="grid lg:grid-cols-12 gap-10 items-center">
+                    
+                    <!-- Left: Authentic Brand Logo & Badge -->
+                    <div class="lg:col-span-5 flex flex-col items-center text-center">
+                        <div class="relative w-52 h-52 sm:w-64 sm:h-64 rounded-full p-2 bg-gradient-to-tr from-wood-500 via-amber-200 to-silver shadow-2xl">
+                            <img src="https://raspy-hall-6b8b.jo6669992.workers.dev/LogoMAMA.png" 
+                                 alt="Mamie aux mains d'argent" 
+                                 class="w-full h-full object-cover rounded-full">
+                        </div>
+                        <div class="mt-5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-wood-800 border border-wood-300/30 text-wood-200 text-xs">
+                            <i class="fa-solid fa-hand-holding-heart text-amber-400"></i>
+                            <span>Artisanat Français • Pièces Uniques</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: Authentic Text from Site + Highlights -->
+                    <div class="lg:col-span-7 space-y-5 text-center lg:text-left">
+                        <span class="text-xs uppercase tracking-[0.25em] text-wood-400 font-semibold">L'âme de l'atelier</span>
+                        <h2 class="font-serif text-3xl sm:text-5xl font-bold text-wood-50">
+                            Savoir-faire & Passion
+                        </h2>
+                        <p class="text-wood-100/90 text-base sm:text-lg leading-relaxed">
+                            Bienvenue chez <strong class="text-amber-300 font-semibold">Mamie aux mains d'argent</strong> ! Passionnée par le travail artisanal, je façonne et personnalise chaque objet avec attention.
+                        </p>
+                        <p class="text-wood-200/80 text-base leading-relaxed">
+                            Chaque création est conçue pour apporter une touche chaleureuse à votre intérieur ou offrir un cadeau mémorable et unique à vos proches : gravure fine sur bois, découpe laser de précision, veilleuses LED aux couleurs de vos équipes préférées, paniers de fêtes ou textiles brodés.
+                        </p>
+
+                        <!-- 3 Craft Pillars -->
+                        <div class="grid sm:grid-cols-3 gap-4 pt-4">
+                            <div class="p-4 rounded-2xl bg-wood-950/60 border border-wood-300/15">
+                                <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-xl mb-2"></i>
+                                <h4 class="font-bold text-sm text-wood-100">Sur-Mesure Total</h4>
+                                <p class="text-xs text-wood-300/75 mt-1">Prénoms, messages humoristiques ou logos de clubs.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-wood-950/60 border border-wood-300/15">
+                                <i class="fa-solid fa-tree text-amber-400 text-xl mb-2"></i>
+                                <h4 class="font-bold text-sm text-wood-100">Matériaux Nobles</h4>
+                                <p class="text-xs text-wood-300/75 mt-1">Bois chaleureux, finitions pailletées, éclairages LED doux.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-wood-950/60 border border-wood-300/15">
+                                <i class="fa-solid fa-gift text-amber-400 text-xl mb-2"></i>
+                                <h4 class="font-bold text-sm text-wood-100">Toutes Occasions</h4>
+                                <p class="text-xs text-wood-300/75 mt-1">Noël, Pâques, Fête des Mamies, anniversaires & apéros.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT & SOCIAL NETWORKS SECTION (REAL LINKS) -->
+    <section id="contact" class="py-24 relative z-10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-8 text-center reveal-up">
+            <span class="text-xs uppercase tracking-[0.25em] text-wood-400 font-semibold block mb-2">Commande & Échange</span>
+            <h2 class="font-serif text-4xl sm:text-6xl font-bold text-wood-50 mb-4">
+                Une envie spécifique ?
+            </h2>
+            <p class="text-wood-200/85 text-base sm:text-lg max-w-2xl mx-auto mb-10">
+                Envoyez-moi un message ou retrouvez-moi directement sur mes réseaux sociaux pour échanger sur votre projet personnalisé !
+            </p>
+
+            <!-- Direct Social CTA Cards (With Exact Links Provided) -->
+            <div class="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                
+                <!-- Facebook Card -->
+                <a href="https://www.facebook.com/profile.php?id=61582478623297" target="_blank" rel="noopener noreferrer"
+                   class="craft-card group p-7 rounded-3xl bg-gradient-to-b from-wood-900 to-wood-950 border border-wood-300/25 hover:border-[#1877F2] flex flex-col items-center text-center transition-all">
+                    <div class="w-16 h-16 rounded-2xl bg-[#1877F2]/20 border border-[#1877F2]/40 flex items-center justify-center text-3xl text-[#1877F2] group-hover:bg-[#1877F2] group-hover:text-white transition-all mb-4 shadow-lg">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-wood-50 mb-1">Contactez-moi sur Facebook</h3>
+                    <p class="text-xs text-wood-300/80 mb-4">Suivez mes dernières nouveautés et envoyez-moi un message privé sur Messenger.</p>
+                    <span class="mt-auto inline-flex items-center gap-2 text-sm font-bold text-[#60a5fa] group-hover:translate-x-1 transition-transform">
+                        <span>Ouvrir la page Facebook</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </span>
+                </a>
+
+                <!-- Instagram Card -->
+                <a href="https://www.instagram.com/mamie_aux_mains_d_argent?fbclid=IwY2xjawUeNKJwZG9mBWV4dG4DYWVtAjEwAHNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR7IrL9Pr0r0qXUTDzxOB_ijj-ocXY1_aBNQELoDSKkWNqoLe2oBM_oy0NtvEQ_aem_LnaUgzFyvDPM1Qhbtlc5oA" target="_blank" rel="noopener noreferrer"
+                   class="craft-card group p-7 rounded-3xl bg-gradient-to-b from-wood-900 to-wood-950 border border-wood-300/25 hover:border-pink-500 flex flex-col items-center text-center transition-all">
+                    <div class="w-16 h-16 rounded-2xl bg-pink-500/20 border border-pink-500/40 flex items-center justify-center text-3xl text-pink-400 group-hover:bg-gradient-to-tr group-hover:from-amber-500 group-hover:via-pink-500 group-hover:to-purple-600 group-hover:text-white transition-all mb-4 shadow-lg">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-wood-50 mb-1">Contactez-moi sur Instagram</h3>
+                    <p class="text-xs text-wood-300/80 mb-4">@mamie_aux_mains_d_argent • Découvrez mes vidéos et créations en stories.</p>
+                    <span class="mt-auto inline-flex items-center gap-2 text-sm font-bold text-pink-400 group-hover:translate-x-1 transition-transform">
+                        <span>Ouvrir Instagram</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </span>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 bg-wood-950 border-t border-wood-300/15 relative z-10 text-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col items-center">
+            <div class="flex items-center gap-3 mb-3">
+                <img src="https://raspy-hall-6b8b.jo6669992.workers.dev/LogoMAMA.png" alt="Logo Mamie aux mains d'argent" class="w-10 h-10 rounded-full border border-wood-400/40">
+                <span class="font-serif text-2xl font-bold text-shimmer">Mamie aux mains d'argent</span>
+            </div>
+            <p class="text-wood-300/75 text-sm max-w-md mb-6">
+                Créations artisanales personnalisées en bois, décorations de fêtes et luminaires.
+            </p>
+            <div class="flex items-center gap-4 mb-6">
+                <a href="https://www.instagram.com/mamie_aux_mains_d_argent?fbclid=IwY2xjawUeNKJwZG9mBWV4dG4DYWVtAjEwAHNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR7IrL9Pr0r0qXUTDzxOB_ijj-ocXY1_aBNQELoDSKkWNqoLe2oBM_oy0NtvEQ_aem_LnaUgzFyvDPM1Qhbtlc5oA" target="_blank" rel="noopener noreferrer"
+                   class="w-10 h-10 rounded-full bg-wood-900 border border-wood-300/20 flex items-center justify-center text-wood-200 hover:text-pink-400 hover:border-pink-400 transition-colors">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61582478623297" target="_blank" rel="noopener noreferrer"
+                   class="w-10 h-10 rounded-full bg-wood-900 border border-wood-300/20 flex items-center justify-center text-wood-200 hover:text-[#1877F2] hover:border-[#1877F2] transition-colors">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+            </div>
+            <div class="text-xs text-wood-400/60">
+                © 2026 Mamie aux mains d'argent - Tous droits réservés.
+            </div>
+        </div>
+    </footer>
+
+    <!-- FULLSCREEN LIGHTBOX MODAL FOR REAL PHOTOS -->
+    <div id="lightbox" class="fixed inset-0 z-[200] bg-black/90 backdrop-blur-xl hidden items-center justify-center p-4">
+        <button id="lightbox-close" class="absolute top-6 right-6 w-12 h-12 rounded-full bg-wood-800/80 text-wood-100 hover:bg-wood-500 hover:text-wood-950 flex items-center justify-center text-xl transition-all">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="max-w-4xl w-full bg-wood-900 border border-wood-300/25 rounded-3xl overflow-hidden shadow-2xl grid md:grid-cols-12">
+            <div class="md:col-span-7 bg-black flex items-center justify-center max-h-[75vh]">
+                <img id="lightbox-img" src="" alt="" class="w-full h-full object-contain max-h-[70vh]">
+            </div>
+            <div class="md:col-span-5 p-6 sm:p-8 flex flex-col justify-between">
+                <div>
+                    <span id="lightbox-cat" class="text-xs uppercase tracking-widest text-amber-400 font-semibold">Création Artisanale</span>
+                    <h3 id="lightbox-title" class="font-serif text-3xl font-bold text-wood-50 mt-1 mb-3"></h3>
+                    <p id="lightbox-desc" class="text-wood-200/85 text-sm leading-relaxed mb-6"></p>
+                    <div class="p-4 rounded-2xl bg-wood-950/70 border border-wood-300/15 space-y-2 text-xs text-wood-300">
+                        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> <span>Personnalisation du prénom ou texte incluse</span></div>
+                        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> <span>Fabrication artisanale par Mamie aux mains d'argent</span></div>
+                    </div>
+                </div>
+
+                <div class="pt-6 space-y-3">
+                    <a href="https://www.facebook.com/profile.php?id=61582478623297" target="_blank" rel="noopener noreferrer"
+                       class="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-wood-500 to-amber-400 text-wood-950 font-bold text-sm flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02] transition-transform">
+                        <i class="fa-brands fa-facebook-messenger"></i>
+                        <span>Commander ce modèle sur Facebook</span>
+                    </a>
+                    <a href="https://www.instagram.com/mamie_aux_mains_d_argent" target="_blank" rel="noopener noreferrer"
+                       class="w-full py-3 px-5 rounded-xl bg-wood-800 hover:bg-wood-700 text-wood-100 font-semibold text-sm flex items-center justify-center gap-2 transition-colors">
+                        <i class="fa-brands fa-instagram"></i>
+                        <span>Demander sur Instagram</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT: REAL ITEMS DATA, 3D TILT, LIGHTBOX, SIMULATOR & PARTICLES -->
+    <script>
+        const BASE_URL = "https://raspy-hall-6b8b.jo6669992.workers.dev/";
+
+        // Exact 12 Real Creations from https://raspy-hall-6b8b.jo6669992.workers.dev/
+        const realCreations = [
+            {
+                id: 1,
+                title: "Chaussettes de Noël Personnalisées",
+                desc: "Douceur et prénom brodé pour des fêtes inoubliables.",
+                img: BASE_URL + "IMAGES001.jpg",
+                category: "fetes",
+                badge: "Noël & Fêtes"
+            },
+            {
+                id: 2,
+                title: "Boîtes de Pâques Gravées",
+                desc: "Paniers en bois découpés au laser garnis de gourmandises.",
+                img: BASE_URL + "IMAGES002.jpg",
+                category: "fetes",
+                badge: "Découpe Laser"
+            },
+            {
+                id: 3,
+                title: "Mugs Festifs Renne",
+                desc: "Tasses personnalisées dorées pour vos chocolats chauds.",
+                img: BASE_URL + "IMAGES003.jpg",
+                category: "fetes",
+                badge: "Idée Cadeau"
+            },
+            {
+                id: 4,
+                title: "Marque-page Renard",
+                desc: "Accessoire en bois gravé pour accompagner vos lectures.",
+                img: BASE_URL + "IMAGES005.jpg",
+                category: "cadeaux",
+                badge: "Bois Gravé"
+            },
+            {
+                id: 5,
+                title: "Lampe LED Stade Toulousain",
+                desc: "Veilleuse en bois sculpté rétroéclairée LED.",
+                img: BASE_URL + "IMAGES006.jpg",
+                category: "luminaire",
+                badge: "Luminaire LED"
+            },
+            {
+                id: 6,
+                title: "Lampe LED Olympique de Marseille",
+                desc: "Création lumineuse aux couleurs emblématiques du club.",
+                img: BASE_URL + "IMAGES007.jpg",
+                category: "luminaire",
+                badge: "Luminaire LED"
+            },
+            {
+                id: 7,
+                title: "Rose \"Bonne Fête Mamie\"",
+                desc: "Un cadeau plein de tendresse gravé sur bois pailleté.",
+                img: BASE_URL + "IMAGES008.jpg",
+                category: "cadeaux",
+                badge: "Bois Pailleté"
+            },
+            {
+                id: 8,
+                title: "Planche à Raclette Humoristique",
+                desc: "Gravure personnalisée sur bois pour vos repas d'hiver.",
+                img: BASE_URL + "IMAGES009.jpg",
+                category: "gourmand",
+                badge: "Gravure Bois"
+            },
+            {
+                id: 9,
+                title: "Planche Apéro Gravée",
+                desc: "Accompagnement idéal pour vos moments de convivialité.",
+                img: BASE_URL + "IMAGES010.jpg",
+                category: "gourmand",
+                badge: "Convivialité"
+            },
+            {
+                id: 10,
+                title: "Cache-Boîte à Mouchoirs",
+                desc: "Design élégant style radio rétro en bois habillé.",
+                img: BASE_URL + "IMAGES011.jpg",
+                category: "cadeaux",
+                badge: "Déco Rétro"
+            },
+            {
+                id: 11,
+                title: "Rose Décorative Pailletée",
+                desc: "Découpe fine sur tige personnalisée au prénom.",
+                img: BASE_URL + "IMAGES012.jpg",
+                category: "cadeaux",
+                badge: "Sur-Mesure"
+            },
+            {
+                id: 12,
+                title: "Boules de Noël Personnalisées",
+                desc: "Décorations de sapin uniques avec prénoms.",
+                img: BASE_URL + "IMAGES013.jpg",
+                category: "fetes",
+                badge: "Sapin & Noël"
+            }
+        ];
+
+        const galleryGrid = document.getElementById('gallery-grid');
+
+        function renderGallery(filter = 'all') {
+            galleryGrid.innerHTML = '';
+            const items = filter === 'all' ? realCreations : realCreations.filter(item => item.category === filter);
+
+            items.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'craft-card group rounded-3xl bg-wood-900/90 border border-wood-300/20 overflow-hidden cursor-pointer flex flex-col justify-between';
+                card.style.animationDelay = `${index * 60}ms`;
+
+                card.innerHTML = `
+                    <div>
+                        <div class="relative h-64 overflow-hidden bg-wood-950">
+                            <img src="${item.img}" alt="${item.title}" loading="lazy"
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
+                            <div class="absolute inset-0 bg-gradient-to-t from-wood-950 via-transparent to-transparent opacity-70"></div>
+                            <span class="absolute top-3.5 left-3.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-wood-950/80 backdrop-blur-md text-amber-300 border border-amber-400/30">
+                                ${item.badge}
+                            </span>
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
+                                <span class="px-4 py-2 rounded-full bg-wood-400 text-wood-950 font-bold text-xs flex items-center gap-2 shadow-xl transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                                    <i class="fa-solid fa-magnifying-glass-plus"></i>
+                                    <span>Agrandir la photo</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-serif text-2xl font-bold text-wood-50 group-hover:text-amber-300 transition-colors leading-snug">
+                                ${item.title}
+                            </h3>
+                            <p class="text-wood-200/75 text-sm mt-1.5 leading-relaxed">
+                                ${item.desc}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-4 pt-2 flex items-center justify-between border-t border-wood-300/10 text-xs text-wood-300">
+                        <span><i class="fa-solid fa-sparkles text-amber-400 mr-1"></i> Personnalisable</span>
+                        <span class="font-semibold text-amber-300 group-hover:underline">Voir en détail →</span>
+                    </div>
+                `;
+
+                // 3D Tilt & Spotlight Effect on MouseMove
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+
+                    const rotateY = ((x / rect.width) - 0.5) * 10;
+                    const rotateX = ((y / rect.height) - 0.5) * -10;
+                    card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+                });
+
+                // Open Lightbox on Click
+                card.addEventListener('click', () => openLightbox(item));
+
+                galleryGrid.appendChild(card);
+            });
+        }
+
+        // Initial Render
+        renderGallery('all');
+
+        // Filter Buttons Logic
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.className = 'filter-btn px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all bg-wood-900/80 text-wood-200 border border-wood-300/20 hover:border-wood-400';
+                });
+                btn.className = 'filter-btn active px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-gradient-to-r from-wood-500 to-wood-400 text-wood-950 shadow-lg';
+                renderGallery(btn.getAttribute('data-filter'));
+            });
+        });
+
+        // Lightbox Modal Logic
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxTitle = document.getElementById('lightbox-title');
+        const lightboxDesc = document.getElementById('lightbox-desc');
+        const lightboxCat = document.getElementById('lightbox-cat');
+
+        function openLightbox(item) {
+            lightboxImg.src = item.img;
+            lightboxImg.alt = item.title;
+            lightboxTitle.textContent = item.title;
+            lightboxDesc.textContent = item.desc;
+            lightboxCat.textContent = item.badge;
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+        }
+
+        document.getElementById('lightbox-close').addEventListener('click', () => {
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+        });
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+            }
+        });
+
+        // Live Engraving & LED Simulator Logic
+        const simInput = document.getElementById('sim-input');
+        const simIcon = document.getElementById('sim-icon');
+        const previewText = document.getElementById('preview-text');
+        const previewIcon = document.getElementById('preview-icon');
+        const previewIconWrap = document.getElementById('preview-icon-wrap');
+        const previewSub = document.getElementById('preview-sub');
+        const previewBoard = document.getElementById('preview-board');
+        const modeWood = document.getElementById('mode-wood');
+        const modeLed = document.getElementById('mode-led');
+        const ledColorPicker = document.getElementById('led-color-picker');
+
+        simInput.addEventListener('input', (e) => {
+            previewText.textContent = e.target.value.trim() || "Votre Texte Ici";
+        });
+
+        simIcon.addEventListener('change', (e) => {
+            previewIcon.className = `fa-solid ${e.target.value}`;
+        });
+
+        modeWood.addEventListener('click', () => {
+            previewBoard.classList.add('wood-plaque');
+            previewBoard.classList.remove('led-plaque');
+            previewText.classList.add('engraved-text');
+            previewText.classList.remove('led-engraved');
+            previewIconWrap.classList.add('engraved-text');
+            previewIconWrap.classList.remove('led-engraved');
+            previewSub.classList.add('engraved-text');
+            previewSub.classList.remove('led-engraved');
+            ledColorPicker.classList.add('opacity-40', 'pointer-events-none');
+            modeWood.className = "py-3 px-4 rounded-xl bg-wood-500 text-wood-950 font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all";
+            modeLed.className = "py-3 px-4 rounded-xl bg-wood-800 text-wood-200 border border-wood-300/20 font-semibold text-sm flex items-center justify-center gap-2 hover:border-sky-400 transition-all";
+        });
+
+        modeLed.addEventListener('click', () => {
+            previewBoard.classList.remove('wood-plaque');
+            previewBoard.classList.add('led-plaque');
+            previewText.classList.remove('engraved-text');
+            previewText.classList.add('led-engraved');
+            previewIconWrap.classList.remove('engraved-text');
+            previewIconWrap.classList.add('led-engraved');
+            previewSub.classList.remove('engraved-text');
+            previewSub.classList.add('led-engraved');
+            ledColorPicker.classList.remove('opacity-40', 'pointer-events-none');
+            modeLed.className = "py-3 px-4 rounded-xl bg-sky-400 text-slate-950 font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all";
+            modeWood.className = "py-3 px-4 rounded-xl bg-wood-800 text-wood-200 border border-wood-300/20 font-semibold text-sm flex items-center justify-center gap-2 transition-all";
+        });
+
+        document.querySelectorAll('.led-color-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const color = btn.getAttribute('data-led');
+                previewBoard.style.setProperty('--led-color', color);
+                document.querySelectorAll('.led-color-btn').forEach(b => b.classList.remove('ring-2', 'ring-white', 'scale-110'));
+                btn.classList.add('ring-2', 'ring-white', 'scale-110');
+            });
+        });
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+            });
+        });
+
+        // Scroll Reveal Observer & Scroll Progress
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scroll-progress').style.width = scrolled + '%';
+        });
+
+        // Custom Laser Cursor
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorRing = document.getElementById('cursor-ring');
+        window.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = `${e.clientX}px`;
+            cursorDot.style.top = `${e.clientY}px`;
+            cursorRing.animate({
+                left: `${e.clientX}px`,
+                top: `${e.clientY}px`
+            }, { duration: 180, fill: "forwards" });
+        });
+
+        document.querySelectorAll('a, button, input, select').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorRing.classList.add('active'));
+            el.addEventListener('mouseleave', () => cursorRing.classList.remove('active'));
+        });
+
+        // Warm Golden Sparkles Background Canvas
+        const canvas = document.getElementById('sparkles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        for (let i = 0; i < 45; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 2 + 0.6,
+                dx: (Math.random() - 0.5) * 0.35,
+                dy: -Math.random() * 0.45 - 0.1,
+                alpha: Math.random() * 0.65 + 0.2
+            });
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(226, 192, 153, ${p.alpha})`;
+                ctx.fill();
+
+                p.x += p.dx;
+                p.y += p.dy;
+
+                if (p.y < 0) p.y = canvas.height;
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
+</body>
+</html>
